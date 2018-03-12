@@ -1,0 +1,12 @@
+{
+  "dependencies": {
+    "axios": "^0.18.0",
+    "express": "^4.16.2"
+  },
+  "name": "should-i-take-my-umbrella-api",
+  "version": "0.0.1",
+  "main": "server.js",
+  "author": "leodlca <ldlcamorim@hotmail.com>",
+  "license": "Commercial License",
+  "private": true
+}
