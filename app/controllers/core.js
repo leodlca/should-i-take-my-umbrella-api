@@ -13,7 +13,7 @@ function shouldI(req, response, next) {
 
     }).then(res => {
 
-        const averagePrecipProbability = getAveragePrecipProbability(res, config.DEFAULT_X_HOURS);
+        const averagePrecipProbability = getAveragePrecipProbability(res, config.DEFAULT_X_HOURS).toFixed(config.TO_FIXED);
 
         response.status(200).json({
             averagePrecipProbability: averagePrecipProbability,
@@ -58,9 +58,23 @@ function getNextXHoursPrecipProbability(data, xHours) {
 }
 
 function getAveragePrecipProbability(data, xHours) {
-    return ((getCurrentPrecipProbability(data) * 2.0) + getNextXHoursPrecipProbability(data, xHours)) / 3.0;
+
+    const current = getCurrentPrecipProbability(data);
+    const next = getNextXHoursPrecipProbability(data, xHours);
+
+    if(current > config.CURRENT_LIMIT) {
+        return (current * config.CURRENT_WEIGHT + next) / (config.CURRENT_WEIGHT + 1.0);
+    } else {
+        return (current * config.NEXT_WEIGHT + next) / (config.NEXT_WEIGHT + 1.0);
+    }
+    
 }
 
 module.exports = {
-    shouldI
+    shouldI,
+    getCurrentIconAndSummary,
+    getHourlyIconAndSummary,
+    getCurrentPrecipProbability,
+    getNextXHoursPrecipProbability,
+    getAveragePrecipProbability
 }
