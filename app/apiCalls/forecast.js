@@ -5,7 +5,7 @@ const config = require('../config/config');
 
 function getData(lat, lng, address) {
 
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {   
 
         axios.get(`https://api.darksky.net/forecast/${config.FORECAST_API_KEY}/${lat},${lng}?exclude=minutely,daily,flags&lang=pt&units=auto`)
         .then(res => {

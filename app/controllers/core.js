@@ -19,7 +19,8 @@ function shouldI(req, response, next) {
             averagePrecipProbability: averagePrecipProbability,
             currently: getCurrentIconAndSummary(res),
             hourly: getHourlyIconAndSummary(res),
-            friendlyMessage: friendlyMessages.getRandom(averagePrecipProbability)
+            friendlyMessage: friendlyMessages.getRandom(averagePrecipProbability),
+            temperature: getCurrentTemperature(res)
         });
 
     }).catch(err => {
@@ -68,6 +69,10 @@ function getAveragePrecipProbability(data, xHours) {
         return (current * config.NEXT_WEIGHT + next) / (config.NEXT_WEIGHT + 1.0);
     }
     
+}
+
+function getCurrentTemperature(data) {
+    return data.currently.temperature;
 }
 
 module.exports = {
