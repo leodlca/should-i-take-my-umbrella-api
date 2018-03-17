@@ -4,8 +4,9 @@ const forecast = require('../apiCalls/forecast');
 const friendlyMessages = require('../utils/friendlyMessages');
 const config = require('../config/config');
 
-function shouldI(req, response, next) {
+function addressShouldI(req, response, next) {
     const address = req.params.address;
+    const xHours = req.params.xHours;
 
     geocode.geocodeAddress(address).then(res => {
 
@@ -14,6 +15,31 @@ function shouldI(req, response, next) {
     }).then(res => {
 
         const averagePrecipProbability = getAveragePrecipProbability(res, config.DEFAULT_X_HOURS).toFixed(config.TO_FIXED);
+
+        response.status(200).json({
+            averagePrecipProbability: averagePrecipProbability,
+            currently: getCurrentIconAndSummary(res),
+            hourly: getHourlyIconAndSummary(res),
+            friendlyMessage: friendlyMessages.getRandom(averagePrecipProbability),
+            temperature: getCurrentTemperature(res)
+        });
+
+    }).catch(err => {
+        response.status(500).json({
+            error: err
+        });
+
+    });
+}
+
+function latlngShouldI(req, response, next) {
+    const lat = req.params.lat;
+    const lng = req.params.lng;
+    const xHours = req.params.xHours;
+
+    forecast.getData(lat, lng, '').then(res => {
+
+        const averagePrecipProbability = getAveragePrecipProbability(res, xHours).toFixed(config.TO_FIXED);
 
         response.status(200).json({
             averagePrecipProbability: averagePrecipProbability,
@@ -76,7 +102,8 @@ function getCurrentTemperature(data) {
 }
 
 module.exports = {
-    shouldI,
+    addressShouldI,
+    latlngShouldI,
     getCurrentIconAndSummary,
     getHourlyIconAndSummary,
     getCurrentPrecipProbability,
