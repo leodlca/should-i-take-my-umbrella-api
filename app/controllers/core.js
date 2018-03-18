@@ -14,7 +14,7 @@ function addressShouldI(req, response, next) {
 
     }).then(res => {
 
-        const averagePrecipProbability = getAveragePrecipProbability(res, config.DEFAULT_X_HOURS).toFixed(config.TO_FIXED);
+        const averagePrecipProbability = getAveragePrecipProbability(res, xHours).toFixed(config.TO_FIXED);
 
         response.status(200).json({
             averagePrecipProbability: averagePrecipProbability,
