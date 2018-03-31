@@ -7,7 +7,7 @@ function getData(lat, lng, address) {
 
     return new Promise((resolve, reject) => {   
 
-        axios.get(`https://api.darksky.net/forecast/${config.FORECAST_API_KEY}/${lat},${lng}?exclude=minutely,daily,flags&lang=pt&units=auto`)
+        axios.get(`https://api.darksky.net/forecast/${config.FORECAST_API_KEY}/${lat},${lng}?exclude=minutely,daily,flags&lang=pt&units=si`)
         .then(res => {
             resolve(res.data);
         }).catch(err => {
